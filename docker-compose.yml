@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  clamav:
+    image: mkodockx/docker-clamav:alpine
+    ports:
+      - 0.0.0.0:3310:3310
+ #   restart: unless-stopped
+  virusscanner:
+    image: ngotzmann/simple-file-virus-scanner:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - clamav
+#    restart: unless-stopped

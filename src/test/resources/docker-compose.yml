@@ -1,0 +1,7 @@
+version: "3.3"
+
+services:
+  clamav:
+    image: mkodockx/docker-clamav:alpine
+    ports:
+      - 127.0.0.1:4410:3310
