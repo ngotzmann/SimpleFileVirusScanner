@@ -5,7 +5,7 @@ services:
     image: mkodockx/docker-clamav:alpine
     ports:
       - 127.0.0.1:3310:3310
-    restart: unless-stopped
+    restart: always
   virusscanner:
     image: ngotzmann/simple-file-virus-scanner:latest
     ports:
@@ -14,3 +14,5 @@ services:
       - CLAMAV_HOST=clamav
     depends_on:
       - clamav
+    restart: always
+
