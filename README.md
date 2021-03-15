@@ -5,6 +5,8 @@ This service offers a small web page to upload a file and check these file again
 Similar project to [virustotal](https://www.virustotal.com/gui/), just in open source with 
 [clamav](https://www.clamav.net/) as virus scanner.  
 
+See [demo](https://virus-scanner.neatdump.io/).  
+
 ### Installation
 
 See docs/INSTALL.md
