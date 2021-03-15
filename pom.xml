@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>net.ngotzmann</groupId>
 	<artifactId>SimpleFileVirusScan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>SimpleFileVirusScan</name>
 	<description>Small service which get files and send these to a clamav server to check if there are infected</description>
 	<properties>
@@ -44,6 +44,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>fi.solita.clamav</groupId>

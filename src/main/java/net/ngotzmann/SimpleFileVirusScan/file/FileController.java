@@ -1,6 +1,8 @@
 package net.ngotzmann.SimpleFileVirusScan.file;
 
 import net.ngotzmann.SimpleFileVirusScan.virusscanner.ScanResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +20,18 @@ public class FileController {
     @Autowired
     public FileService fileService;
 
+    Logger logger = LoggerFactory.getLogger(FileController.class);
+
     @RequestMapping(value = "/scan", method = RequestMethod.POST)
     public String handleFileUpload(@PathVariable("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         try {
             ScanResult result = fileService.isFileInfected(file);
             redirectAttributes = setResultText(result, redirectAttributes, file.getOriginalFilename());
         } catch (IllegalStateException | IllegalArgumentException e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("ExceptionMessage", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("ExceptionMessage",
                     "We are sorry this operation failed, Please make sure that no binary was uploaded.");
         }

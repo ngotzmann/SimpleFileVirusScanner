@@ -1,57 +1,43 @@
 package net.ngotzmann.SimpleFileVirusScan.virusscanner;
 
-import net.ngotzmann.SimpleFileVirusScan.file.FileService;
 import org.junit.*;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+import net.ngotzmann.SimpleFileVirusScan.file.FileService;
+import org.junit.jupiter.api.Test;
 
-import java.io.File;
 
 @Testcontainers
-@RunWith(SpringRunner.class )
 @SpringBootTest
 public class FileServiceIntegrationTest {
+
+    @Container
+    static GenericContainer<?> container =
+            new GenericContainer<>(DockerImageName.parse("mkodockx/docker-clamav:alpine"));//.withExposedPorts(3310);
 
     @Autowired
     private FileService fileService;
 
-//    @ClassRule
-//    public static DockerComposeContainer dockerCompose =
-//            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"));
-
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("clamav.host", () -> "127.0.0.1");
-        registry.add("clamav.port", () -> 4410);
+        Integer mappedPort = container.getMappedPort(3310);
+        registry.add("clamav.host", () -> "0.0.0.0");
+        registry.add("clamav.port", () -> mappedPort);
     }
 
-//    @Before
-//    public void before() {
-//        dockerCompose.start();
-//    }
-//
-//    @AfterClass
-//    public static void afterClass() {
-//        dockerCompose.stop();
-//    }
-
     @Test
-    public void isFileInfected_FileIsNotInfected() {
-        DockerComposeContainer dockerCompose =
-                new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"));
-        dockerCompose.start();
+    public void hisFileInfected_FileIsNotInfected() {
         MultipartFile multipartFile = new MockMultipartFile("sourceFile.tmp", "Hello World".getBytes());
         ScanResult fileInfected = fileService.isFileInfected(multipartFile);
         Assert.assertFalse(fileInfected.isFileInfected());
-        dockerCompose.stop();
     }
 
     @Test
