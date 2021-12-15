@@ -1,8 +1,6 @@
 package net.ngotzmann.SimpleFileVirusScan.file;
 
 import net.ngotzmann.SimpleFileVirusScan.virusscanner.ScanResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +17,6 @@ public class FileController {
 
     @Autowired
     public FileService fileService;
-
-    Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @RequestMapping(value = "/scan", method = RequestMethod.POST)
     public String handleFileUpload(@PathVariable("file") MultipartFile file, RedirectAttributes redirectAttributes) {
